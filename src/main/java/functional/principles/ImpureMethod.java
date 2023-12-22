@@ -1,7 +1,7 @@
 package functional.principles;
 
 public class ImpureMethod {
-    int m = 5;
+    final int m = 5;
     // case 1
     public int sum(int a, int b) {
         return a + b + m;
@@ -9,7 +9,6 @@ public class ImpureMethod {
 
     // case 2
     public int impure(int a, int b) {
-        m++;
         return a + b;
     }
 

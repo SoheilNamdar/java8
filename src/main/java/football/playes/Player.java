@@ -1,5 +1,6 @@
 package football.playes;
 
+// Immutable class
 public class Player {
     private final String name;
     private final int goal;
