@@ -12,12 +12,12 @@ public class RecursivFunction {
 
         assertThat(15).isEqualTo(iterativeSum(limit));
         Assertions.assertThat(15).isEqualTo(recursivSum(limit));
-        //Assertions.assertThat(15).isEqualTo(tailRecursivSum(sum, limit));
+        Assertions.assertThat(15).isEqualTo(tailRecursivSum(0, limit));
     }
 
     private int tailRecursivSum(int sum, int limit) {
         if(limit == 0){
-            return limit;
+            return sum;
         }
         return tailRecursivSum(sum + limit, limit - 1);
     }
