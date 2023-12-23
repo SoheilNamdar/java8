@@ -32,4 +32,5 @@ public class PrimitiveFunctionShould {
         final long result = intToLongFunction.applyAsLong(var);
         Assertions.assertThat(result).isEqualTo(3L);
     }
+
 }
