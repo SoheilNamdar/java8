@@ -1,24 +1,20 @@
 package functional.stream;
 import football.playes.Player;
 import helper.PlayerTestHelper;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Predicate;
-import java.util.stream.Collectors;
 
 import static java.util.Comparator.reverseOrder;
 import static java.util.stream.Collectors.*;
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class StreamOperatorShould {
+public class IntermediateOperatorShould {
     private List<Player> players;
     @BeforeEach
     void setUp() {
@@ -45,11 +41,12 @@ public class StreamOperatorShould {
         List<?> playerNames = players.stream()
                 .map(function)
                 .distinct()
+                .skip(2)
                 .collect(toList());
 
         final List<String> ExpectedReselt = new LinkedList<>();
-        ExpectedReselt.add("Ali DAEI");
-        ExpectedReselt.add("Christian RONALDO");
+        //ExpectedReselt.add("Ali DAEI");
+        //ExpectedReselt.add("Christian RONALDO");
         ExpectedReselt.add("Ferenc PUSKAS");
         ExpectedReselt.add("Mokhtar DAHARI");
         ExpectedReselt.add("Sunil Chhetri");
@@ -62,6 +59,7 @@ public class StreamOperatorShould {
                 .map(Player::getGoal)
                 //.sorted()
                 .sorted(reverseOrder())
+                .limit(3)
                 .collect(toList());
         List<Integer> expectedResult = new LinkedList<>();
         /*expectedResult.add(84);
@@ -73,9 +71,9 @@ public class StreamOperatorShould {
         expectedResult.add(115);
         expectedResult.add(109);
         expectedResult.add(109);
-        expectedResult.add(89);
-        expectedResult.add(85);
-        expectedResult.add(84);
+       // expectedResult.add(89);
+        //expectedResult.add(85);
+        //expectedResult.add(84);
         assertThat(sortedScoreGoals).isEqualTo(expectedResult);
     }
 }
