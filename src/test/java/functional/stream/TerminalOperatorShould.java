@@ -40,19 +40,15 @@ public class TerminalOperatorShould {
         ToIntFunction<? super Integer> intConverter = goal-> Integer.valueOf(goal);
 
         Integer sum = goals.collect(summingInt(intConverter));
-
         assertThat(sum).isEqualTo(591);
 
         Double average = goals.collect(averagingInt(intConverter));
-
         assertThat(average).isEqualTo(98.5);
 
         Optional<Integer> maxGoalScorer = goals.max(Comparator.naturalOrder());
-
         assertThat(maxGoalScorer.get()).isEqualTo(115);
 
         Long numberOfElement = goals.collect(counting());
-
         assertThat(numberOfElement).isEqualTo(6);
 
         IntSummaryStatistics summary = goals.collect(summarizingInt(intConverter));
@@ -61,5 +57,18 @@ public class TerminalOperatorShould {
         assertThat(summary.getMax()).isEqualTo(115);
         assertThat(summary.getMin()).isEqualTo(84);
         assertThat(summary.getCount()).isEqualTo(6);
+    }
+
+    @Test
+    void group_data() {
+        Function<Player, String> playerName = Player::getName;
+        final Map<String, Long> groupedPlayers = players.stream().collect(groupingBy(playerName, counting()));
+        groupedPlayers.forEach((k,v) -> System.out.println("player is " + k + " , has " + v + " occurencies"));
+        assertThat(groupedPlayers)
+                .containsEntry("Ali DAEI", 2L)
+                .containsEntry("Christian RONALDO", 1L)
+                .containsEntry("Ferenc PUSKAS", 1L)
+                .containsEntry("Mokhtar DAHARI", 1L)
+                .containsEntry("Sunil Chhetri", 1L);
     }
 }
