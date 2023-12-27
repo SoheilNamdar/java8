@@ -41,7 +41,6 @@ public class TerminalOperatorShould {
 
         Integer sum = goals.collect(summingInt(intConverter));
         assertThat(sum).isEqualTo(591);
-
         Double average = goals.collect(averagingInt(intConverter));
         assertThat(average).isEqualTo(98.5);
 
@@ -58,7 +57,6 @@ public class TerminalOperatorShould {
         assertThat(summary.getMin()).isEqualTo(84);
         assertThat(summary.getCount()).isEqualTo(6);
     }
-
     @Test
     void group_data() {
         Function<Player, String> playerName = Player::getName;
