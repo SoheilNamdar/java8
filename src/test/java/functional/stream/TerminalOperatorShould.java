@@ -68,8 +68,21 @@ public class TerminalOperatorShould {
     }
     @Test
     void reduce_data() {
-        BinaryOperator<Integer> sumOfGoals = (total,goal) -> total+goal;
+        BinaryOperator<Integer> sumOfGoals = Integer::sum;
         final Integer totalGoals = players.stream().map(Player::getGoal).reduce(0, sumOfGoals);
-        Assertions.assertThat(totalGoals).isEqualTo(591);
+        assertThat(totalGoals).isEqualTo(591);
+
+        BinaryOperator<String> formatName =
+                (res, playrName) -> res + " | "
+                + playrName.split(" ")[0] + " "
+                + playrName.split(" ")[1].toUpperCase();
+        final String formattedNames = players.stream().map(Player::getName)
+                .reduce("",formatName)
+                .replaceFirst("\\|"," ")
+                .trim();
+        //System.out.println(formattedNames);
+
+        assertThat(formattedNames)
+                .isEqualTo("Ali DAEI | Ali DAEI | Christian RONALDO | Ferenc PUSKAS | Mokhtar DAHARI | Sunil CHHETRI");
     }
 }
