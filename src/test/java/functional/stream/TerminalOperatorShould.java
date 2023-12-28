@@ -7,10 +7,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.*;
-import java.util.function.BiConsumer;
-import java.util.function.Function;
-import java.util.function.ToIntFunction;
-import java.util.function.UnaryOperator;
+import java.util.function.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -68,5 +65,11 @@ public class TerminalOperatorShould {
                 .containsEntry("Ferenc PUSKAS", 1L)
                 .containsEntry("Mokhtar DAHARI", 1L)
                 .containsEntry("Sunil Chhetri", 1L);
+    }
+    @Test
+    void reduce_data() {
+        BinaryOperator<Integer> sumOfGoals = (total,goal) -> total+goal;
+        final Integer totalGoals = players.stream().map(Player::getGoal).reduce(0, sumOfGoals);
+        Assertions.assertThat(totalGoals).isEqualTo(591);
     }
 }
