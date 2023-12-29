@@ -33,7 +33,7 @@ public class TerminalOperatorShould {
     }
     @Test
     void calculate_data() {
-        Stream<Integer> goals = players.stream().map(Player::getGoal);
+        Stream<Integer> goals = playerGoals();
         ToIntFunction<? super Integer> intConverter = goal-> Integer.valueOf(goal);
 
         Integer sum = goals.collect(summingInt(intConverter));
@@ -54,6 +54,27 @@ public class TerminalOperatorShould {
         assertThat(summary.getMin()).isEqualTo(84);
         assertThat(summary.getCount()).isEqualTo(6);
     }
+
+    @Test
+    void match_data() {
+        Predicate<? super Integer> goalMoreThan50 = goal -> goal >= 50;
+
+        boolean allPlayersScoreMoreThan50 = playerGoals().allMatch(goalMoreThan50);
+        assertThat(allPlayersScoreMoreThan50).isTrue();
+
+        boolean anyPlayersScoreMoreThan50 = playerGoals().anyMatch(goalMoreThan50);
+        assertThat(allPlayersScoreMoreThan50).isTrue();
+
+        boolean nonePlayersScoreMoreThan50 = playerGoals().noneMatch(goalMoreThan50);
+        assertThat(nonePlayersScoreMoreThan50).isFalse();
+
+    }
+
+    private Stream<Integer> playerGoals() {
+        return players.stream()
+                .map(Player::getGoal);
+    }
+
     @Test
     void group_data() {
         Function<Player, String> playerName = Player::getName;
@@ -72,17 +93,21 @@ public class TerminalOperatorShould {
         final Integer totalGoals = players.stream().map(Player::getGoal).reduce(0, sumOfGoals);
         assertThat(totalGoals).isEqualTo(591);
 
-        BinaryOperator<String> formatName =
-                (res, playrName) -> res + " | "
-                + playrName.split(" ")[0] + " "
-                + playrName.split(" ")[1].toUpperCase();
-        final String formattedNames = players.stream().map(Player::getName)
-                .reduce("",formatName)
+        final String formattedNames = players.stream()
+                .map(Player::getName)
+                .reduce("", this::format)
                 .replaceFirst("\\|"," ")
                 .trim();
         //System.out.println(formattedNames);
 
         assertThat(formattedNames)
                 .isEqualTo("Ali DAEI | Ali DAEI | Christian RONALDO | Ferenc PUSKAS | Mokhtar DAHARI | Sunil CHHETRI");
+    }
+
+    private String format(String res, String playrName) {
+        String seperator = " ";
+        String firstName = playrName.split(seperator)[0];
+        String lastName = playrName.split(seperator)[1];
+        return res + " | " + firstName + seperator + lastName.toUpperCase();
     }
 }
