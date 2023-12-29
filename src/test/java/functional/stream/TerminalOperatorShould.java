@@ -59,10 +59,10 @@ public class TerminalOperatorShould {
     void match_data() {
         Predicate<? super Integer> goalMoreThan50 = goal -> goal >= 50;
 
-        boolean allPlayersScoreMoreThan50 = playerGoals().allMatch(goalMoreThan50);
+        final boolean allPlayersScoreMoreThan50 = playerGoals().allMatch(goalMoreThan50);
         assertThat(allPlayersScoreMoreThan50).isTrue();
 
-        boolean anyPlayersScoreMoreThan50 = playerGoals().anyMatch(goalMoreThan50);
+        final boolean anyPlayersScoreMoreThan50 = playerGoals().anyMatch(goalMoreThan50);
         assertThat(allPlayersScoreMoreThan50).isTrue();
 
         boolean nonePlayersScoreMoreThan50 = playerGoals().noneMatch(goalMoreThan50);
@@ -86,6 +86,26 @@ public class TerminalOperatorShould {
                 .containsEntry("Ferenc PUSKAS", 1L)
                 .containsEntry("Mokhtar DAHARI", 1L)
                 .containsEntry("Sunil Chhetri", 1L);
+    }
+    @Test
+    void find_data() {
+        final Optional<String> firstScorer = players.stream()
+                .filter(player -> player.getGoal() < 100)
+                .map(Player::getName)
+                .findFirst();
+        assertThat(firstScorer.get()).isEqualTo("Mokhtar DAHARI");
+
+        Optional<String> findAny = players.stream()
+                .filter(player -> player.getGoal() < 100)
+                .map(Player::getName)
+                .findAny();
+        String actual = findAny.get();
+        System.out.println(actual);
+        assertThat(actual).satisfiesAnyOf(
+                p -> p.equals("Sunil Chhetri"),
+                p -> p.equals("Mokhtar DAHARI"),
+                p -> p.equals("Ferenc PUSKAS")
+        );
     }
     @Test
     void reduce_data() {
