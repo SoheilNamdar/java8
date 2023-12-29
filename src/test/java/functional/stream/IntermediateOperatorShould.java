@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 import static java.util.Comparator.reverseOrder;
 import static java.util.stream.Collectors.*;
@@ -52,7 +53,6 @@ public class IntermediateOperatorShould {
         ExpectedReselt.add("Sunil Chhetri");
         assertThat(ExpectedReselt).isEqualTo(playerNames);
     }
-
     @Test
     void sort_data() {
         List<Integer> sortedScoreGoals = players.stream()
@@ -75,5 +75,16 @@ public class IntermediateOperatorShould {
         //expectedResult.add(85);
         //expectedResult.add(84);
         assertThat(sortedScoreGoals).isEqualTo(expectedResult);
+    }
+
+    @Test
+    void be_lazy() {
+        final List<Integer> collect = players.stream()
+                .map(Player::getGoal)
+                .peek(goal -> System.out.println("Scored goal is : " + goal))
+                .filter(goal -> goal < 50)
+                .peek(goal -> System.out.println("Code won't be executed from this line !"))
+                .collect(toList());
+        assertThat(collect).isEmpty();
     }
 }
