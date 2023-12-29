@@ -11,6 +11,4 @@ public class PlayersWithCup extends Player{
     public List<String> getCups() {
         return cups;
     }
-
-
 }

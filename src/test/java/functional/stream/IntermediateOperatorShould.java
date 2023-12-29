@@ -1,16 +1,21 @@
 package functional.stream;
 import football.playes.Player;
+import football.playes.PlayersWithCup;
 import helper.PlayerTestHelper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
+import static java.lang.System.out;
+import static java.util.Arrays.asList;
 import static java.util.Comparator.reverseOrder;
 import static java.util.stream.Collectors.*;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -23,7 +28,7 @@ public class IntermediateOperatorShould {
     }
     @Test
     void filter_data() {
-        Consumer<? super Player> sideEffect = player -> System.out.println(player);
+        Consumer<? super Player> sideEffect = player -> out.println(player);
         Predicate<? super Player> topScore = player -> player.getGoal() > 100;
         final List<Player> topScorerWhereNameIsAliDaei = players.stream()
                 .filter(topScore)
@@ -76,15 +81,36 @@ public class IntermediateOperatorShould {
         //expectedResult.add(84);
         assertThat(sortedScoreGoals).isEqualTo(expectedResult);
     }
-
     @Test
     void be_lazy() {
         final List<Integer> collect = players.stream()
                 .map(Player::getGoal)
-                .peek(goal -> System.out.println("Scored goal is : " + goal))
+                .peek(goal -> out.println("Scored goal is : " + goal))
                 .filter(goal -> goal < 50)
-                .peek(goal -> System.out.println("Code won't be executed from this line !"))
+                .peek(goal -> out.println("Code won't be executed from this line !"))
                 .collect(toList());
         assertThat(collect).isEmpty();
+    }
+
+    @Test
+    void handle_complex_objests() {
+        final List<PlayersWithCup> playersWithCup = new PlayerTestHelper().getPlayersWithCup();
+
+        final List<List<String>> byMap = playersWithCup.stream()
+                .filter(pwc -> pwc.getName().contains("Ali"))
+                .map(p -> p.getCups())
+                .collect(toList());
+        byMap.forEach(out::println);
+
+        assertThat(byMap).contains(Arrays.asList("Bundes Liga","Azadegan"));
+
+        final List<String> byflatMap = playersWithCup.stream()
+                .filter(pwd -> pwd.getName().contains("Ali") )
+                .flatMap(p -> p.getCups().stream())
+                .collect(toList());
+        byflatMap.forEach(out::println);
+
+        assertThat(byflatMap).contains("Bundes Liga","Azadegan");
+
     }
 }
