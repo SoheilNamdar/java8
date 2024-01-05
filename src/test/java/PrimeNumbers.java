@@ -8,6 +8,7 @@ public class PrimeNumbers {
 
     private boolean isPrime(int number) {
         return IntStream.range(2,number).noneMatch(integer -> number % integer == 0);
+
     }
 
     public List<Integer> calculate(int limit) {
