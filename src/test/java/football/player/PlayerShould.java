@@ -11,10 +11,7 @@ public class PlayerShould {
     @Test
     void give_the_best_score_with_oop() {
 
-        final List<Player> scorers = new LinkedList<>();
-        scorers.add(new Player("Ali DAEI", 109));
-        scorers.add(new Player("Christian RONALDO", 115));
-        scorers.add(new Player("Mokhtar DAHARI", 89));
+        List<Player> scorers = getPlayers();
 
         Player bestScorer = scorers.get(0);
         for (Player scorer : scorers) {
@@ -26,14 +23,19 @@ public class PlayerShould {
     }
     @Test
     void give_best_score_fp() {
-        List<Player> scorers = new ArrayList<>();
-        scorers.add(new Player("Ali DAEI", 109));
-        scorers.add(new Player("Christian RONALDO", 115));
-        scorers.add(new Player("Mokhtar DAHARI", 89));
+        List<Player> scorers = getPlayers();
 
         final Player bestScorer = scorers.stream().max(Comparator.comparing(player -> player.getGoal())).get();
 
         Assertions.assertThat(bestScorer.getName()).isEqualTo("Christian RONALDO");
+    }
+
+    private static List<Player> getPlayers() {
+        List<Player> scorers = new ArrayList<>();
+        scorers.add(new Player("Ali DAEI", 109));
+        scorers.add(new Player("Christian RONALDO", 115));
+        scorers.add(new Player("Mokhtar DAHARI", 89));
+        return scorers;
     }
 
 }

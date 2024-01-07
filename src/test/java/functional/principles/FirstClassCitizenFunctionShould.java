@@ -4,10 +4,7 @@ import football.playes.Player;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -35,9 +32,10 @@ public class FirstClassCitizenFunctionShould {
     void should_return_from_a_method() {
         List<String> players = getPlayers();
 
-        Comparator<String> stringComparator = getStringComparator();
-        Collections.sort(players, stringComparator);
+        Collections.sort(players, (a,b) -> a.compareTo(b));
+    }
 
+    private static void extracted(List<String> players) {
         assertPlayersSort(players);
     }
 
@@ -46,15 +44,16 @@ public class FirstClassCitizenFunctionShould {
     }
 
     private static void assertPlayersSort(List<String> players) {
-        assertThat(players.get(0).equals("ABEDZADEH"));
-        assertThat(players.get(1).equals("AliDAEI"));
-        assertThat(players.get(2).equals("ABEDZADEH"));
+        assertThat(players.get(0)).isEqualTo("ABEDZADEH");
+        assertThat(players.get(1)).isEqualTo("AliDAEI");
+        assertThat(players.get(2)).isEqualTo("MADJIDI");
     }
+
 
     private static List<String> getPlayers() {
         List<String > players = new LinkedList<>();
         players.add("AliDAEI");
-        players.add("Ronaldo");
+        players.add("MADJIDI");
         players.add("ABEDZADEH");
         return players;
     }
