@@ -12,46 +12,46 @@ public class FirstClassCitizenFunctionShould {
     //Lambda Expression is the name of function in java
     @Test
     void be_passed_as_method_parameter() {
-        List<String> players = getPlayers();
+        List<String> players = getStrings();
 
-        Collections.sort(players, (a,b) -> a.compareTo(b));
+        Collections.sort(players, (a, b) -> a.compareTo(b));
 
-        assertPlayersSort(players);
+        extracted(players);
     }
+
     @Test
-    void should_be_passed_as_variable() {
-        List<String> players = getPlayers();
+    void be_passed_as_method_variable() {
+        List<String> players = getStrings();
 
         Comparator<String> stringComparator = (a, b) -> a.compareTo(b);
         Collections.sort(players, stringComparator);
 
-        assertPlayersSort(players);
+        extracted(players);
     }
 
     @Test
-    void should_return_from_a_method() {
-        List<String> players = getPlayers();
+    void be_returned_from_a_method() {
+        List<String> players = getStrings();
 
-        Collections.sort(players, (a,b) -> a.compareTo(b));
-    }
+        Comparator<String> stringComparator = getStringComparator();
+        Collections.sort(players, stringComparator);
 
-    private static void extracted(List<String> players) {
-        assertPlayersSort(players);
+        extracted(players);
     }
 
     private static Comparator<String> getStringComparator() {
-        return (a, b) -> a.compareTo(b);
+        Comparator<String> stringComparator = (a, b) -> a.compareTo(b);
+        return stringComparator;
     }
 
-    private static void assertPlayersSort(List<String> players) {
+    private static void extracted(List<String> players) {
         assertThat(players.get(0)).isEqualTo("ABEDZADEH");
         assertThat(players.get(1)).isEqualTo("AliDAEI");
         assertThat(players.get(2)).isEqualTo("MADJIDI");
     }
 
-
-    private static List<String> getPlayers() {
-        List<String > players = new LinkedList<>();
+    private static List<String> getStrings() {
+        List<String> players = new LinkedList<>();
         players.add("AliDAEI");
         players.add("MADJIDI");
         players.add("ABEDZADEH");

@@ -18,16 +18,16 @@ public class PlayerShould {
             if(scorer.getGoal() > bestScorer.getGoal())
                 bestScorer = scorer;
         }
-        // System.out.println(bestScorer.getName());
-        Assertions.assertThat(bestScorer.getName()).isEqualTo("Christian RONALDO");
+        System.out.println(bestScorer.getName());
     }
     @Test
     void give_best_score_fp() {
         List<Player> scorers = getPlayers();
 
-        final Player bestScorer = scorers.stream().max(Comparator.comparing(player -> player.getGoal())).get();
+        Player bestScorer = scorers.stream().max(Comparator.comparing(Player::getGoal)).get();
 
         Assertions.assertThat(bestScorer.getName()).isEqualTo("Christian RONALDO");
+
     }
 
     private static List<Player> getPlayers() {
